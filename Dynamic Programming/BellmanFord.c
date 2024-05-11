@@ -2,66 +2,64 @@
 #include <stdio.h>
 
 #define MAX 10
+#define INF 9999
+
+int dist[MAX];
 
 int graph[MAX][MAX] = {
-        {0,3,0,7},
-        {8,0,2,0},
-        {5,0,0,1},
-        {2,0,0,0}
+        {0, 6, 5, 5, 0, 0, 0},
+        {0, 0, 0, 0, -1, 0, 0},
+        {0, -2, 0, 0, 1, 0, 0},
+        {0, 0, -2, 0, 0, -1, 0},
+        {0, 0, 0, 0, 0, 0, 3},
+        {0, 0, 0, 0, 0, 0, 3},
+        {0, 0, 0, 0, 0, 0, 0}
     };
 
-int cost[MAX][MAX];
-
-void initialize (int rows, int cols)
+void initialize (int nodes, int source)
 {
-    for (int i=0; i< rows; i++)
+    for (int i=0; i< nodes; i++)
     {
-        for (int j=0; j< cols; j++)
-        {
-            if (i == j)
-            cost[i][j] = 0;
-            else if (graph[i][j] == 0)
-            cost[i][j] = 999;
-            else
-            cost[i][j] = graph[i][j];
-        }
+        if (i == source)
+        dist[i] = 0;
+        else
+        dist[i] = INF;
     }
 }
 
-void algorithm (int rows, int cols)
+void algorithm (int nodes)
 {
-    for (int i =0; i < rows; i++)
+    for (int i =0; i < nodes-1; i++)
     {
-        for (int j =0; j < rows; j++)
+        for (int j =0; j < nodes; j++)
         {
-            for (int k = 0; k < rows; k++)
+            for (int k = 0; k < nodes; k++)
             {
-                if(cost[j][k] > cost[j][i]+cost[i][k])
+                if (graph[j][k])
                 {
-                    cost[j][k] = cost[j][i]+cost[i][k];
+                    if(graph[j][k] < dist[k]-dist[j])
+                    {
+                        dist[k] = graph[j][k]+dist[j];
+                    }
                 }
             }
         }
     }
 }
 
-void printMatrix (int rows, int cols)
+void printMatrix (int nodes)
 {
-    for (int i =0; i < rows; i++)
+    for (int i =0; i < nodes; i++)
     {
-        for (int j = 0; j < cols; j++)
-        {
-            printf("%d ", cost[i][j]);
-        }
-        printf("\n");
+        printf("%d ", dist[i]);
     }
 }
 
 int main()
 {
     int rows =4, cols =4;
-    initialize(4, 4);
-    algorithm(4, 4);
-    printMatrix(4, 4);
+    initialize(7, 0);
+    algorithm(7);
+    printMatrix(7);
     return 0;
 }
