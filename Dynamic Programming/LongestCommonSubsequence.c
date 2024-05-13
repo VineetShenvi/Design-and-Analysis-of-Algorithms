@@ -8,9 +8,6 @@
 char string1[MAX] = "PROSPERITY";
 char string2[MAX] = "PROPERTIES";
 
-// size_t len1 = strlen(string1);
-// size_t len2
-
 int table[MAX][MAX] = {0};
 
 void algorithm ()
